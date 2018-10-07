@@ -48,3 +48,16 @@ CREATE TABLE `oauth_refresh_token`  (
 ```
 
 - get token
+POST: http://localhost:9900/oauth/token
+1. Authorization: Basic Auth, UserName: oauth_client_details-> client_id, Password: oauth_client_details-> client_secret
+2. Body: scope: read, grant_type: password, username: userService-> username, password: userService-> password
+
+- refresh token
+POST: http://localhost:9900/oauth/token
+1. Authorization: Basic Auth, UserName: oauth_client_details-> client_id, Password: oauth_client_details-> client_secret
+2. Body: grant_type: refresh_token, refresh_token: refresh token
+
+- say hello
+GET: http://localhost:9900/sayHello
+1. Headers: Authorization: access token
+ 
