@@ -1,6 +1,7 @@
 # spring-security-oauth2-demo
 
 - create tables
+[table description](http://andaily.com/spring-oauth-server/db_table_description.html)
 ```sql
 -- ----------------------------
 -- Table structure for oauth_access_token
