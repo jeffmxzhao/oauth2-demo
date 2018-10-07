@@ -1,0 +1,35 @@
+server:
+  port: 9900
+spring:
+  profiles: default
+  application:
+    name: oatuh
+  # 数据源配置
+  datasource:
+    druid:
+      driver-class-name: com.mysql.jdbc.Driver
+      url: jdbc:mysql://localhost:1000/oauth2?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false
+      username: root
+      password: 123123
+      # 初始化大小，最小，最大
+      initial-size: 1
+      min-idle: 1
+      max-active: 5
+      # 配置获取连接等待超时的时间
+      max-wait: 10000
+      # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+      time-between-eviction-runs-millis: 59000
+      # 配置一个连接在池中最小生存的时间，单位是毫秒
+      min-evictable-idle-time-millis: 300000
+      #检测连接是否有效的sql
+      validation-query: SELECT 1
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+mybatis:
+  type-aliases-package: com.kkl.demo.entity
+  mapper-locations: classpath*:/mapper/**/*Mapper.xml
+  configuration:
+    cache-enabled: true
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
