@@ -1,6 +1,9 @@
 # spring-security-oauth2-demo
 
-- create tables
+## 1. create tables
+- [table description](http://andaily.com/spring-oauth-server/db_table_description.html)
+- [schema.sql](https://github.com/spring-projects/spring-security-oauth/blob/master/spring-security-oauth2/src/test/resources/schema.sql)
+
 ```sql
 -- ----------------------------
 -- Table structure for oauth_access_token
@@ -47,17 +50,17 @@ CREATE TABLE `oauth_refresh_token`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 ```
 
-- get token
+## 2. get token
 POST: http://localhost:9900/oauth/token
-1. Authorization: Basic Auth, UserName: oauth_client_details-> client_id, Password: oauth_client_details-> client_secret
-2. Body: scope: read, grant_type: password, username: userService-> username, password: userService-> password
+  - Authorization: Basic Auth, UserName: oauth_client_details-> client_id, Password: oauth_client_details-> client_secret
+  - Body: scope: read, grant_type: password, username: userService-> username, password: userService-> password
 
-- refresh token
+## 3. refresh token
 POST: http://localhost:9900/oauth/token
-1. Authorization: Basic Auth, UserName: oauth_client_details-> client_id, Password: oauth_client_details-> client_secret
-2. Body: grant_type: refresh_token, refresh_token: refresh token
+  - Authorization: Basic Auth, UserName: oauth_client_details-> client_id, Password: oauth_client_details-> client_secret
+  - Body: grant_type: refresh_token, refresh_token: refresh token
 
-- say hello
+## 4. say hello
 GET: http://localhost:9900/sayHello
-1. Headers: Authorization: access token
+  - Headers: Authorization: access token
  
