@@ -11,7 +11,9 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers("/**").authenticated()
+        http.authorizeRequests()
+                .antMatchers("/druid/**").permitAll()
+                .antMatchers("/**").authenticated()
                 .anyRequest().authenticated();
     }
 

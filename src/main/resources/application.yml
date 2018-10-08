@@ -8,9 +8,9 @@ spring:
   datasource:
     druid:
       driver-class-name: com.mysql.jdbc.Driver
-      url: jdbc:mysql://localhost:1000/oauth2?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false
-      username: root
-      password: 123123
+      url: jdbc:mysql://localhost:123456/oauth2?useUnicode=true&characterEncoding=utf-8&useSSL=false
+      username: ENC(piKlcwkmGQjFF+Eu2nIZUA==)
+      password: ENC(FjqjGbpz5hnE633jFjsfcG9QwgedqTWY)
       # 初始化大小，最小，最大
       initial-size: 1
       min-idle: 1
@@ -26,6 +26,10 @@ spring:
       test-while-idle: true
       test-on-borrow: false
       test-on-return: false
+  redis:
+    host: localhost
+    port: 123456
+    password: ENC(sTsEsHz37eh/3pGVJHDgAjE7XW+BQy5g)
 mybatis:
   type-aliases-package: com.kkl.demo.entity
   mapper-locations: classpath*:/mapper/**/*Mapper.xml
@@ -33,3 +37,10 @@ mybatis:
     cache-enabled: true
     map-underscore-to-camel-case: true
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+jasypt:
+  encryptor:
+    password: ${JASYPT_ENCRYPTOR_PASSWORD:}
+logging:
+  level:
+    org.springframework.security: debug
+    com.alibaba: debug
