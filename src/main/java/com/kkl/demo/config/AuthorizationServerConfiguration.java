@@ -109,10 +109,10 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
         return tokenStore;
     }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+//    @Bean
+//    public PasswordEncoder passwordEncoder() {
+//        return new BCryptPasswordEncoder();
+//    }
 
     @Bean
     public JwtAccessTokenConverter jwtAccessTokenConverter() {
