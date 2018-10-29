@@ -13,6 +13,7 @@ public class UserService implements UserDetailsService {
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         /*模拟数据库操作*/
         User user = new User();
+        user.setUserId(123L);
         user.setUsername("admin");
         user.setPassword("admin");
         return new CustomUserDetails(user);

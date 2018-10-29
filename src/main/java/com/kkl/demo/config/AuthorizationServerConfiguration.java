@@ -24,6 +24,7 @@ import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
+import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 
 import java.util.Arrays;
@@ -37,19 +38,6 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     @Autowired
     private DruidDataSourceAutoConfigure dataSource;
 
-    @Bean // 声明TokenStore实现
-    public TokenStore tokenStore() {
-        return new JdbcTokenStore(dataSource.dataSource());
-    }
-
-    @Bean // 声明 ClientDetails实现
-    public ClientDetailsService clientDetails() {
-        return new JdbcClientDetailsService(dataSource.dataSource());
-    }
-
-    @Autowired
-    private TokenStore tokenStore;
-
     @Autowired
     private AuthenticationManager authenticationManager;
 
@@ -57,19 +45,11 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     private UserService userService;
 
     @Autowired
-    private ClientDetailsService clientDetails;
-
-    @Autowired
     private RedisConnectionFactory redisConnectionFactory;
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients.jdbc(dataSource.dataSource());
-
-//        JdbcClientDetailsService clientDetailsService = new JdbcClientDetailsService(dataSource.dataSource());
-//        clientDetailsService.setSelectClientDetailsSql(DEFAULT_SELECT_STATEMENT);
-//        clientDetailsService.setFindClientDetailsSql(DEFAULT_FIND_STATEMENT);
-//        clients.withClientDetails(clientDetailsService);
     }
 
     @Override
@@ -77,29 +57,13 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
         //token增强配置
         TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
         tokenEnhancerChain.setTokenEnhancers(
-                Arrays.asList(tokenEnhancer(), jwtAccessTokenConverter()));
+                Arrays.asList(tokenEnhancer()));
 
         endpoints.authenticationManager(authenticationManager);
-        endpoints.tokenStore(tokenStore());
+        endpoints.tokenStore(redisTokenStore());
         endpoints.userDetailsService(userService);
-        endpoints.setClientDetailsService(clientDetails);
-        //配置TokenServices参数
-        DefaultTokenServices tokenServices = new DefaultTokenServices();
-        tokenServices.setTokenStore(redisTokenStore());
-        tokenServices.setSupportRefreshToken(true);
-        tokenServices.setClientDetailsService(endpoints.getClientDetailsService());
-        tokenServices.setTokenEnhancer(tokenEnhancerChain);
-        tokenServices.setAccessTokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(1)); // 1天
-        endpoints.tokenServices(tokenServices);
-    }
-
-    @Bean
-    @Primary
-    public DefaultTokenServices tokenServices() {
-        DefaultTokenServices tokenServices = new DefaultTokenServices();
-        tokenServices.setSupportRefreshToken(true);
-        tokenServices.setTokenStore(tokenStore);
-        return tokenServices;
+        endpoints.tokenEnhancer(tokenEnhancerChain);
+//        endpoints.accessTokenConverter(jwtAccessTokenConverter());
     }
 
     @Bean
@@ -110,30 +74,32 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     }
 
 //    @Bean
+//    public TokenStore jwtTokenStore() {
+//        return new JwtTokenStore(jwtAccessTokenConverter());
+//    }
+
+//    @Bean
 //    public PasswordEncoder passwordEncoder() {
 //        return new BCryptPasswordEncoder();
 //    }
 
-    @Bean
-    public JwtAccessTokenConverter jwtAccessTokenConverter() {
-        DemoJwtAccessTokenConverter jwtAccessTokenConverter = new DemoJwtAccessTokenConverter();
-        jwtAccessTokenConverter.setSigningKey("demo");
-        return jwtAccessTokenConverter;
-    }
+//    @Bean
+//    public JwtAccessTokenConverter jwtAccessTokenConverter() {
+//        DemoJwtAccessTokenConverter jwtAccessTokenConverter = new DemoJwtAccessTokenConverter();
+//        jwtAccessTokenConverter.setSigningKey("demo");
+//        return jwtAccessTokenConverter;
+//    }
 
     @Bean
     public TokenEnhancer tokenEnhancer() {
-//        return (accessToken, authentication) -> {
-//            final Map<String, Object> additionalInfo = new HashMap<>(2);
-//            additionalInfo.put("license", "oauth demo");
-//            CustomUserDetails user = (CustomUserDetails) authentication.getUserAuthentication().getPrincipal();
-//            if (user != null) {
-//                additionalInfo.put("userId", user.getUsername());
-//            }
-//            ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(additionalInfo);
-//            return accessToken;
-//        };
         return (accessToken, authentication) -> {
+            final Map<String, Object> additionalInfo = new HashMap<>(2);
+            additionalInfo.put("license", "oauth demo");
+            CustomUserDetails user = (CustomUserDetails) authentication.getUserAuthentication().getPrincipal();
+            if (user != null) {
+                additionalInfo.put("userId", user.getUser().getUserId());
+            }
+            ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(additionalInfo);
             return accessToken;
         };
     }
