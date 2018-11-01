@@ -1,0 +1,10 @@
+server:
+  port: 9910
+spring:
+  profiles: default
+  application:
+    name: oatuh2-service
+logging:
+  level:
+    org.springframework.security: debug
+    com.alibaba: debug

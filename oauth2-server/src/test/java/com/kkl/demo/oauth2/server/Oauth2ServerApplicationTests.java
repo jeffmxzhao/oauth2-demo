@@ -4,17 +4,13 @@ import com.ulisesbocchio.jasyptspringboot.encryptor.DefaultLazyEncryptor;
 import lombok.extern.log4j.Log4j;
 import org.jasypt.encryption.StringEncryptor;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.env.StandardEnvironment;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
 
 //@RunWith(SpringRunner.class)
 //@SpringBootTest
 //@ActiveProfiles("dev")
 @Log4j
-public class OauthApplicationTests {
+public class Oauth2ServerApplicationTests {
 
 	@Test
 	public void contextLoads() {

@@ -1,12 +1,12 @@
-package com.kkl.demo.oauth2.server;
+package com.kkl.demo.oauth2.service;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class OauthApplication {
+public class Oauth2ServiceApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(OauthApplication.class, args);
+		SpringApplication.run(Oauth2ServiceApplication.class, args);
 	}
 }
