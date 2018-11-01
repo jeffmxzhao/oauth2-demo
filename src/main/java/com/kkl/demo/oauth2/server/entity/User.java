@@ -1,4 +1,4 @@
-package com.kkl.demo.entity;
+package com.kkl.demo.oauth2.server.entity;
 
 import lombok.Data;
 

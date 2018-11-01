@@ -1,4 +1,4 @@
-package com.kkl.demo;
+package com.kkl.demo.oauth2.server;
 
 import com.ulisesbocchio.jasyptspringboot.encryptor.DefaultLazyEncryptor;
 import lombok.extern.log4j.Log4j;

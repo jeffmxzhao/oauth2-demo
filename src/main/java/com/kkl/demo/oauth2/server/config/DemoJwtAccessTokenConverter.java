@@ -15,7 +15,7 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.kkl.demo.config;
+package com.kkl.demo.oauth2.server.config;
 
 
 

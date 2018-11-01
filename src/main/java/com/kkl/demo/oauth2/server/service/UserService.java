@@ -1,7 +1,7 @@
-package com.kkl.demo.service;
+package com.kkl.demo.oauth2.server.service;
 
-import com.kkl.demo.entity.CustomUserDetails;
-import com.kkl.demo.entity.User;
+import com.kkl.demo.oauth2.server.entity.CustomUserDetails;
+import com.kkl.demo.oauth2.server.entity.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
