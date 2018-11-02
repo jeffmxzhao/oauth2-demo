@@ -3,8 +3,21 @@ server:
 spring:
   profiles: default
   application:
-    name: oatuh2-service
+    name: oauth2-service
 logging:
   level:
     org.springframework.security: debug
     com.alibaba: debug
+security:
+  basic:
+    enabled: false
+  oauth2:
+    client:
+      access-token-uri: http://localhost:9900/oauth/token
+      user-authorization-uri: http://localhost:9900/oauth/authorize
+      client-id: app
+      client-secret: app123
+    resource:
+#      user-info-uri: http://localhost:9900/me
+      jwt:
+        key-uri: http://localhost:9900/oauth/token_key

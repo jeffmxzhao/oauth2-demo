@@ -13,9 +13,12 @@ import org.springframework.security.oauth2.config.annotation.configurers.ClientD
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
+import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
+import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 
 import java.util.Arrays;
@@ -47,38 +50,43 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
         //token增强配置
         TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
         tokenEnhancerChain.setTokenEnhancers(
-                Arrays.asList(tokenEnhancer()));
+                Arrays.asList(tokenEnhancer(), jwtAccessTokenConverter()));
 
         endpoints.authenticationManager(authenticationManager);
-        endpoints.tokenStore(redisTokenStore());
+        endpoints.tokenStore(jwtTokenStore());
         endpoints.userDetailsService(userService);
         endpoints.tokenEnhancer(tokenEnhancerChain);
-//        endpoints.accessTokenConverter(jwtAccessTokenConverter());
-    }
-
-    @Bean
-    public TokenStore redisTokenStore() {
-        RedisTokenStore tokenStore = new RedisTokenStore(redisConnectionFactory);
-        tokenStore.setPrefix("od-");
-        return tokenStore;
+        endpoints.accessTokenConverter(jwtAccessTokenConverter());
     }
 
 //    @Bean
-//    public TokenStore jwtTokenStore() {
-//        return new JwtTokenStore(jwtAccessTokenConverter());
+//    public TokenStore redisTokenStore() {
+//        RedisTokenStore tokenStore = new RedisTokenStore(redisConnectionFactory);
+//        tokenStore.setPrefix("od-");
+//        return tokenStore;
 //    }
+
+    @Bean
+    public TokenStore jwtTokenStore() {
+        return new JwtTokenStore(jwtAccessTokenConverter());
+    }
 
 //    @Bean
 //    public PasswordEncoder passwordEncoder() {
 //        return new BCryptPasswordEncoder();
 //    }
 
-//    @Bean
-//    public JwtAccessTokenConverter jwtAccessTokenConverter() {
-//        DemoJwtAccessTokenConverter jwtAccessTokenConverter = new DemoJwtAccessTokenConverter();
-//        jwtAccessTokenConverter.setSigningKey("demo");
-//        return jwtAccessTokenConverter;
-//    }
+    @Override
+    public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
+        security.tokenKeyAccess("isAuthenticated()").checkTokenAccess("isAuthenticated()");
+    }
+
+    @Bean
+    public JwtAccessTokenConverter jwtAccessTokenConverter() {
+        DemoJwtAccessTokenConverter jwtAccessTokenConverter = new DemoJwtAccessTokenConverter();
+        jwtAccessTokenConverter.setSigningKey("demo");
+        return jwtAccessTokenConverter;
+    }
 
     @Bean
     public TokenEnhancer tokenEnhancer() {
