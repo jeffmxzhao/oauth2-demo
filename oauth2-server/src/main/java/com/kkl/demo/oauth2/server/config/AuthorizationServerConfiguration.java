@@ -8,6 +8,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
@@ -54,6 +56,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 
         endpoints.authenticationManager(authenticationManager);
         endpoints.tokenStore(jwtTokenStore());
+//        endpoints.tokenStore(redisTokenStore());
         endpoints.userDetailsService(userService);
         endpoints.tokenEnhancer(tokenEnhancerChain);
         endpoints.accessTokenConverter(jwtAccessTokenConverter());
@@ -71,9 +74,14 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
         return new JwtTokenStore(jwtAccessTokenConverter());
     }
 
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
 //    @Bean
 //    public PasswordEncoder passwordEncoder() {
-//        return new BCryptPasswordEncoder();
+//        return (NoOpPasswordEncoder) NoOpPasswordEncoder.getInstance();
 //    }
 
     @Override

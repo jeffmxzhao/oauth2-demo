@@ -9,8 +9,6 @@ logging:
     org.springframework.security: debug
     com.alibaba: debug
 security:
-  basic:
-    enabled: false
   oauth2:
     client:
       access-token-uri: http://localhost:9900/oauth/token

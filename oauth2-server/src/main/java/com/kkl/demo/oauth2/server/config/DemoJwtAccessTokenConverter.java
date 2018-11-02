@@ -25,11 +25,6 @@ import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenCo
 
 import java.util.Map;
 
-/**
- * @author lengleng
- * @date 2018/4/7
- * token 声明版权
- */
 public class DemoJwtAccessTokenConverter extends JwtAccessTokenConverter {
     @Override
     public Map<String, ?> convertAccessToken(OAuth2AccessToken token, OAuth2Authentication authentication) {

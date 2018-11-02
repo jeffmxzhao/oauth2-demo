@@ -14,7 +14,6 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
         http
                 .authorizeRequests()
                 .antMatchers("/druid/**").permitAll()
-                .antMatchers("/**").authenticated()
                 .anyRequest().authenticated();
     }
 
