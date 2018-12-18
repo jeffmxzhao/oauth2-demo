@@ -16,6 +16,6 @@ security:
       client-id: app
       client-secret: app123
     resource:
-#      user-info-uri: http://localhost:9900/me
-      jwt:
-        key-uri: http://localhost:9900/oauth/token_key
+      user-info-uri: http://localhost:9900/me
+#      jwt:
+#        key-uri: http://localhost:9900/oauth/token_key
