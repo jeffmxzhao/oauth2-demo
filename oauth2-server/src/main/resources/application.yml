@@ -8,7 +8,7 @@ spring:
   datasource:
     druid:
       driver-class-name: com.mysql.jdbc.Driver
-      url: jdbc:mysql://localhost:123456/oauth2?useUnicode=true&characterEncoding=utf-8&useSSL=false
+      url: jdbc:mysql://39.108.123.69:8355/oauth2?useUnicode=true&characterEncoding=utf-8&useSSL=false
       username: ENC(piKlcwkmGQjFF+Eu2nIZUA==)
       password: ENC(FjqjGbpz5hnE633jFjsfcG9QwgedqTWY)
       # 初始化大小，最小，最大
@@ -27,8 +27,8 @@ spring:
       test-on-borrow: false
       test-on-return: false
   redis:
-    host: localhost
-    port: 123456
+    host: 119.23.43.232
+    port: 19549
     password: ENC(sTsEsHz37eh/3pGVJHDgAjE7XW+BQy5g)
 mybatis:
   type-aliases-package: com.kkl.demo.entity
@@ -40,7 +40,7 @@ mybatis:
 jasypt:
   encryptor:
     password: ${JASYPT_ENCRYPTOR_PASSWORD:}
-logging:
-  level:
-    org.springframework.security: debug
-    com.alibaba: debug
+#logging:
+      ##  level:
+    ##    org.springframework.security: debug
+    ##    com.alibaba: debug

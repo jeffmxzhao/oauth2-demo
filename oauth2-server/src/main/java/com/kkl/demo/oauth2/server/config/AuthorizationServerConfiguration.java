@@ -51,29 +51,29 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
         //token增强配置
-        TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
-        tokenEnhancerChain.setTokenEnhancers(
-                Arrays.asList(tokenEnhancer(), jwtAccessTokenConverter()));
+//        TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
+//        tokenEnhancerChain.setTokenEnhancers(
+//                Arrays.asList(tokenEnhancer(), jwtAccessTokenConverter()));
 
         endpoints.authenticationManager(authenticationManager);
-        endpoints.tokenStore(jwtTokenStore());
-//        endpoints.tokenStore(redisTokenStore());
+//        endpoints.tokenStore(jwtTokenStore());
+        endpoints.tokenStore(redisTokenStore());
         endpoints.userDetailsService(userService);
-        endpoints.tokenEnhancer(tokenEnhancerChain);
-        endpoints.accessTokenConverter(jwtAccessTokenConverter());
+//        endpoints.tokenEnhancer(tokenEnhancerChain);
+//        endpoints.accessTokenConverter(jwtAccessTokenConverter());
+    }
+
+    @Bean
+    public TokenStore redisTokenStore() {
+        RedisTokenStore tokenStore = new RedisTokenStore(redisConnectionFactory);
+        tokenStore.setPrefix("od-");
+        return tokenStore;
     }
 
 //    @Bean
-//    public TokenStore redisTokenStore() {
-//        RedisTokenStore tokenStore = new RedisTokenStore(redisConnectionFactory);
-//        tokenStore.setPrefix("od-");
-//        return tokenStore;
+//    public TokenStore jwtTokenStore() {
+//        return new JwtTokenStore(jwtAccessTokenConverter());
 //    }
-
-    @Bean
-    public TokenStore jwtTokenStore() {
-        return new JwtTokenStore(jwtAccessTokenConverter());
-    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -91,24 +91,24 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
         security.tokenKeyAccess("isAuthenticated()").checkTokenAccess("isAuthenticated()");
     }
 
-    @Bean
-    public JwtAccessTokenConverter jwtAccessTokenConverter() {
-        DemoJwtAccessTokenConverter jwtAccessTokenConverter = new DemoJwtAccessTokenConverter();
-        jwtAccessTokenConverter.setSigningKey("demo");
-        return jwtAccessTokenConverter;
-    }
+//    @Bean
+//    public JwtAccessTokenConverter jwtAccessTokenConverter() {
+//        DemoJwtAccessTokenConverter jwtAccessTokenConverter = new DemoJwtAccessTokenConverter();
+//        jwtAccessTokenConverter.setSigningKey("demo");
+//        return jwtAccessTokenConverter;
+//    }
 
-    @Bean
-    public TokenEnhancer tokenEnhancer() {
-        return (accessToken, authentication) -> {
-            final Map<String, Object> additionalInfo = new HashMap<>(2);
-            additionalInfo.put("license", "oauth demo");
-            CustomUserDetails user = (CustomUserDetails) authentication.getUserAuthentication().getPrincipal();
-            if (user != null) {
-                additionalInfo.put("userId", user.getUser().getUserId());
-            }
-            ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(additionalInfo);
-            return accessToken;
-        };
-    }
+//    @Bean
+//    public TokenEnhancer tokenEnhancer() {
+//        return (accessToken, authentication) -> {
+//            final Map<String, Object> additionalInfo = new HashMap<>(2);
+//            additionalInfo.put("license", "oauth demo");
+//            CustomUserDetails user = (CustomUserDetails) authentication.getUserAuthentication().getPrincipal();
+//            if (user != null) {
+//                additionalInfo.put("userId", user.getUser().getUserId());
+//            }
+//            ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(additionalInfo);
+//            return accessToken;
+//        };
+//    }
 }
